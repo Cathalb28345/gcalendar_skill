@@ -1,0 +1,13 @@
+use the voice as the key and use the biometric data as the individual key, this would allow for the key not to be stored anywhere , all you would have to store is the encripted voice biometric data.
+
+
+
+Use Advanced Encryption Standard
+
+
+use
+
+start x
+
+
+ to start up the  gui interface
