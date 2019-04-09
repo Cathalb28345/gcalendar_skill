@@ -13,12 +13,10 @@ from datetime import datetime, timedelta
 from mycroft.util.parse import extract_datetime
 from mycroft.api import DeviceApi
 from requests import HTTPError
-
 from __future__ import print_function
 import datetime
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
-
 UTC_TZ = u'+00:00'
 
 
@@ -111,10 +109,8 @@ def is_tomorrow(d):
 def is_wholeday_event(e):
     return 'dateTime' not in e['start']
 
-
 def remove_tz(string):
     return string[:-6]
-
 
 class MycroftTokenCredentials(client.AccessTokenCredentials):
     def __init__(self, cred_id):
@@ -173,27 +169,27 @@ class GoogleCalendarSkill(MycroftSkill):
 
     def __register_intents(self):
         LOG.info('Loading calendar intents')
-        intent = IntentBuilder('GetNextAppointment') \
-            .require('NextKeyword') \
-            .one_of('AppointmentKeyword', 'ScheduleKeyword') \
+        intent = IntentBuilder('GetNextAppointment')\
+            .require('NextKeyword')\
+            .one_of('AppointmentKeyword', 'ScheduleKeyword')\
             .build()
         self.register_intent(intent, self.get_next)
 
-        intent = IntentBuilder('GetDaysAppointmentsIntent') \
-            .require('QueryKeyword') \
-            .one_of('AppointmentKeyword', 'ScheduleKeyword') \
+        intent = IntentBuilder('GetDaysAppointmentsIntent')\
+            .require('QueryKeyword')\
+            .one_of('AppointmentKeyword', 'ScheduleKeyword')\
             .build()
         self.register_intent(intent, self.get_day)
 
-        intent = IntentBuilder('GetFirstAppointmentIntent') \
-            .one_of('AppointmentKeyword', 'ScheduleKeyword') \
-            .require('FirstKeyword') \
+        intent = IntentBuilder('GetFirstAppointmentIntent')\
+            .one_of('AppointmentKeyword', 'ScheduleKeyword')\
+            .require('FirstKeyword')\
             .build()
         self.register_intent(intent, self.get_first)
 
     def initialize(self):
         self.schedule_event(self.__calendar_connect, datetime.now(),
-                            name='calendar_connect')
+                                      name='calendar_connect')
 
     def get_next(self, msg=None):
         now = datetime.utcnow().isoformat() + 'Z'  # 'Z' indicates UTC time
@@ -267,7 +263,7 @@ class GoogleCalendarSkill(MycroftSkill):
                 else:
                     start = e['start'].get('dateTime', e['start'].get('date'))
                     d = datetime.strptime(remove_tz(start),
-                                          '%Y-%m-%dT%H:%M:%S')
+                                             '%Y-%m-%dT%H:%M:%S')
                     starttime = nice_time(d, self.lang, True, self.use_24hour,
                                           True)
                     if is_today(d) or is_tomorrow(d) or True:
@@ -308,7 +304,7 @@ class GoogleCalendarSkill(MycroftSkill):
             self.log.debug("NO TITLE")
             return
 
-        st = extract_datetime(msg.data['utterance'])[0]  # start time
+        st = extract_datetime(msg.data['utterance'])[0] # start time
         # convert to UTC
         st -= timedelta(seconds=self.location['timezone']['offset'] / 1000)
         et = st + timedelta(hours=1)
@@ -330,7 +326,7 @@ class GoogleCalendarSkill(MycroftSkill):
         }
         data = {'appointment': title}
         try:
-            self.service.events() \
+            self.service.events()\
                 .insert(calendarId='primary', body=event).execute()
             self.speak_dialog('AddSucceeded', data)
         except:
