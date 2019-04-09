@@ -2,3 +2,5 @@ google-api-python-client
 httplib2
 apiclient
 oauth2client
+httplib2
+google-auth-oauthlib

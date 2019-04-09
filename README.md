@@ -1,4 +1,3 @@
-## pip install --upgrade google-api-python-client google-auth-httplib2 google-auth-oauthlib
 ## Google Calendar skill
 A skill allowing Mycroft to access Google Calendar.
 

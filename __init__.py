@@ -14,6 +14,11 @@ from mycroft.util.parse import extract_datetime
 from mycroft.api import DeviceApi
 from requests import HTTPError
 
+from __future__ import print_function
+import datetime
+from google_auth_oauthlib.flow import InstalledAppFlow
+from google.auth.transport.requests import Request
+
 UTC_TZ = u'+00:00'
 
 
