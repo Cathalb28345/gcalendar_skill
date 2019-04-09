@@ -5,6 +5,14 @@ path = os.path.dirname(sys.modules[__name__].__file__)
 sys.path.insert(0, path)
 from google_cred import *
 
+from calendar_api.calendar_api import google_calendar_api
+m=google_calendar_api()
+m.create_event(calendar_id='cathalbrady4@gmail.com',
+start='2017,12,5,15,00,00',
+end='2017,12,5,15,15,00'
+description='foo'
+)
+
 
 """Handles basic authentication and provides feedback in form of upcoming
    events (if any) after completion.
