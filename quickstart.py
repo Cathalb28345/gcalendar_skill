@@ -5,56 +5,11 @@ import os.path
 from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
-from httplib2 import http
-from  oauth2client import file, client, tools
-try:
-    import argparse
-    flags = argparse.ArgumentParser(parents =[tools.argparser]).parse_args()
-except ImportError:
-    flags = None
 
+ # If modifying these scopes, delete the file token.pickle.
+SCOPES = ['https://www.googleapis.com/auth/calendar.readonly']
 
-# If modifying these scopes, delete the file token.pickle.
-SCOPES = ['https://www.googleapis.com/auth/calendar']
-store = file.Storage('storage.json')
-creds = store.get()
-if not creds or creds.invalid:
-    flow = client.flow_from_clientsecrets('client_secret.json', SCOPES)
-    creds = tools.run_flow(flow,store,flags)\
-            if flags else tools.run(flow, store)
-CAL = build('calendar', 'v3', http=creds.authorise(http()))
-
-#GMT_off =
-EVENT = {
-        'summary': 'Google I/O 2015',
-        'location': '800 Howard St., San Francisco, CA 94103',
-        'description': 'A chance to hear more about Google\'s developer products.',
-        'start': {
-            'dateTime': '2019-04-10T09:00:00-07:00',
-            'timeZone': 'America/Los_Angeles',
-        },
-        'end': {
-            'dateTime': '2019-04-11T09:00:00-07:00',
-            'timeZone': 'America/Los_Angeles',
-        },
-        'recurrence': [
-            'RRULE:FREQ=DAILY;COUNT=2'
-        ],
-        'attendees': [
-            {'email': 'cathalb4@live.com'},
-        ],
-        'reminders': {
-            'useDefault': False,
-            'overrides': [
-                {'method': 'email', 'minutes': 24 * 60},
-                {'method': 'popup', 'minutes': 10},
-            ],
-        },
-    }
-e = CAL.events().insert(calendarId='primary', sendNotifications = True,  body=EVENT).execute()
-    #print('Event created: %s' % (e.get('htmlLink')))
-
-def main():
+ def main():
     """Shows basic usage of the Google Calendar API.
     Prints the start and name of the next 10 events on the user's calendar.
     """
@@ -77,9 +32,9 @@ def main():
         with open('token.pickle', 'wb') as token:
             pickle.dump(creds, token)
 
-    service = build('calendar', 'v3', credentials=creds)
+     service = build('calendar', 'v3', credentials=creds)
 
-    # Call the Calendar API
+     # Call the Calendar API
     now = datetime.datetime.utcnow().isoformat() + 'Z' # 'Z' indicates UTC time
     print('Getting the upcoming 10 events')
     events_result = service.events().list(calendarId='primary', timeMin=now,
@@ -87,11 +42,11 @@ def main():
                                         orderBy='startTime').execute()
     events = events_result.get('items', [])
 
-    if not events:
+     if not events:
         print('No upcoming events found.')
     for event in events:
         start = event['start'].get('dateTime', event['start'].get('date'))
         print(start, event['summary'])
 
-if __name__ == '__main__':
+ if __name__ == '__main__':
     main()
